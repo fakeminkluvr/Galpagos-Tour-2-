@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galapagos Islands - Year 11 Biology</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    color: #202124;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  nav {
+    background: #1a6b5a;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 52px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .nav-title { font-size: 0.95rem; font-weight: 700; color: #fff; }
+
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { font-size: 0.82rem; color: rgba(255,255,255,0.85); text-decoration: none; }
+  .nav-links a:hover { color: #fff; text-decoration: underline; }
+
+  .banner {
+    background: #1a6b5a;
+    color: #fff;
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .banner h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .banner p { font-size: 0.95rem; color: rgba(255,255,255,0.78); max-width: 500px; margin: 0 auto 0.5rem; }
+  .banner-meta { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+
+  .stats-bar {
+    background: #f1f3f4;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 1.1rem 2rem;
+  }
+
+  .stat { text-align: center; }
+  .stat-num { display: block; font-size: 1.5rem; font-weight: 700; color: #1a6b5a; line-height: 1; }
+  .stat-label { font-size: 0.73rem; color: #5f6368; margin-top: 0.15rem; }
+
+  .page { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #1a6b5a;
+    margin-bottom: 0.35rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #202124;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e0e0e0;
+  }
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #202124;
+    margin: 1.4rem 0 0.45rem;
+  }
+
+  p { margin-bottom: 0.85rem; color: #3c4043; }
+
+  .page-divider { border: none; border-top: 1px solid #e0e0e0; }
+
+  .section-bg { background: #f1f3f4; padding: 2.5rem 2rem; }
+  .section-bg-green { background: #e8f3ed; padding: 2.5rem 2rem; }
+
+  .section-bg-dark {
+    background: #1e2a35;
+    padding: 2.5rem 2rem;
+  }
+  .section-bg-dark h2 { color: #fff; border-bottom-color: rgba(255,255,255,0.1); }
+  .section-bg-dark h3 { color: #fff; }
+  .section-bg-dark p { color: rgba(255,255,255,0.78); }
+  .section-bg-dark .section-label { color: #7dd3c8; }
+
+  .voyage {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 0.9rem 1.1rem;
+    margin: 0.9rem 0;
+    font-size: 0.82rem;
+  }
+
+  .v-stop { background: #1a6b5a; color: #fff; padding: 0.15rem 0.6rem; border-radius: 3px; font-size: 0.75rem; }
+  .v-stop.hi { background: #c94f2c; }
+  .v-arrow { color: #bbb; }
+
+  .obs-list {
+    margin: 0.9rem 0;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .obs-item {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .obs-item:last-child { border-bottom: none; }
+
+  .obs-loc {
+    background: #f1f3f4;
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: #1a6b5a;
+    padding: 0.9rem 1rem;
+    min-width: 130px;
+    border-right: 1px solid #e0e0e0;
+  }
+
+  .obs-body { padding: 0.9rem 1.2rem; font-size: 0.87rem; color: #3c4043; }
+  .obs-body strong { color: #202124; display: block; margin-bottom: 0.2rem; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.65rem;
+    margin: 0.9rem 0;
+  }
+
+  .step {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1rem;
+    border-top: 3px solid #1a6b5a;
+  }
+
+  .step-num { font-size: 1.4rem; font-weight: 700; color: #e0e0e0; display: block; line-height: 1; margin-bottom: 0.35rem; }
+  .step h4 { font-size: 0.82rem; font-weight: 700; color: #202124; margin-bottom: 0.25rem; }
+  .step p { font-size: 0.78rem; color: #5f6368; margin: 0; line-height: 1.5; }
+
+  /* island cards */
+  .island-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 1.1rem;
+  }
+
+  .island-header {
+    background: #1a6b5a;
+    color: #fff;
+    padding: 0.85rem 1.25rem;
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+
+  .island-header.rust { background: #c94f2c; }
+  .island-header.navy { background: #1e4a6e; }
+
+  .island-header h3 { font-size: 1.1rem; color: #fff; margin: 0; }
+  .island-days { font-size: 0.75rem; color: rgba(255,255,255,0.65); margin-left: auto; }
+
+  .island-body { padding: 1.1rem 1.25rem; }
+
+  .island-facts {
+    display: flex;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 0.78rem;
+    color: #5f6368;
+  }
+
+  .justify-box {
+    background: #e8f3ed;
+    border-left: 3px solid #1a6b5a;
+    padding: 0.65rem 0.9rem;
+    margin: 0.65rem 0;
+    font-size: 0.84rem;
+    color: #1a6b5a;
+    border-radius: 0 5px 5px 0;
+  }
+
+  .justify-box strong {
+    display: block;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.2rem;
+    opacity: 0.7;
+  }
+
+  .org-table { width: 100%; border-collapse: collapse; margin-top: 0.65rem; font-size: 0.83rem; }
+
+  .org-table th {
+    background: #f1f3f4;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 700;
+    color: #5f6368;
+    padding: 0.45rem 0.75rem;
+    text-align: left;
+    border: 1px solid #e0e0e0;
+  }
+
+  .org-table td {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid #e0e0e0;
+    vertical-align: top;
+    color: #3c4043;
+  }
+
+  .org-table td:first-child { font-weight: 700; color: #202124; }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.63rem;
+    font-weight: 700;
+    padding: 0.1rem 0.38rem;
+    border-radius: 3px;
+    margin: 0.08rem;
+    text-transform: uppercase;
+  }
+
+  .tag-s { background: #dbeafe; color: #1e4db7; }
+  .tag-b { background: #fef3c7; color: #92400e; }
+  .tag-p { background: #dcfce7; color: #15803d; }
+
+  .map-wrap {
+    background: #c2dff0;
+    border-radius: 6px;
+    padding: 1rem;
+    border: 1px solid #a8cfe4;
+    margin-top: 1.25rem;
+  }
+
+  .data-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+    margin: 0.9rem 0;
+  }
+
+  .data-box {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .data-num { display: block; font-size: 1.7rem; font-weight: 700; color: #7dd3c8; line-height: 1; margin-bottom: 0.2rem; }
+  .data-lbl { font-size: 0.7rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .finding {
+    background: rgba(255,255,255,0.05);
+    border-left: 3px solid #7dd3c8;
+    border-radius: 0 5px 5px 0;
+    padding: 0.7rem 0.9rem;
+    margin: 0.65rem 0;
+    font-size: 0.87rem;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .finding strong { color: #7dd3c8; }
+
+  .chart-wrap {
+    background: rgba(255,255,255,0.05);
+    border-radius: 6px;
+    padding: 1.1rem;
+    margin: 1.1rem 0;
+  }
+
+  .chart-title { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.9rem; }
+
+  .bar-chart { display: flex; align-items: flex-end; gap: 0.5rem; height: 115px; }
+  .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 0.25rem; }
+  .bar { width: 100%; border-radius: 3px 3px 0 0; }
+  .bar-a { background: #1a6b5a; }
+  .bar-b { background: #e07b39; }
+  .bar-lbl { font-size: 0.62rem; color: rgba(255,255,255,0.4); text-align: center; }
+
+  .chart-legend { display: flex; gap: 1.5rem; margin-top: 0.9rem; font-size: 0.73rem; color: rgba(255,255,255,0.5); }
+  .ldot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 0.3rem; vertical-align: middle; }
+
+  .bib-entry {
+    font-size: 0.87rem;
+    color: #3c4043;
+    padding: 0.7rem 0 0.7rem 2rem;
+    text-indent: -2rem;
+    border-bottom: 1px solid #e0e0e0;
+    line-height: 1.65;
+  }
+
+  .bib-entry:last-of-type { border-bottom: none; }
+
+  .bib-note {
+    font-size: 0.77rem;
+    color: #5f6368;
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid #e0e0e0;
+    font-style: italic;
+  }
+
+  footer {
+    background: #f1f3f4;
+    border-top: 1px solid #e0e0e0;
+    text-align: center;
+    padding: 1.25rem;
+    font-size: 0.77rem;
+    color: #5f6368;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 660px) {
+    .steps { grid-template-columns: 1fr 1fr; }
+    .data-row { grid-template-columns: 1fr; }
+    .stats-bar { gap: 1.5rem; }
+    .nav-links { display: none; }
+    .obs-loc { min-width: 90px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-title">Galapagos Islands - Darwin's Living Laboratory</span>
+  <ul class="nav-links">
+    <li><a href="#darwin">Darwin</a></li>
+    <li><a href="#tour">Tour</a></li>
+    <li><a href="#grants">Grants Study</a></li>
+    <li><a href="#bibliography">Bibliography</a></li>
+  </ul>
+</nav>
+
+<div class="banner">
+  <h1>Darwin's Living Laboratory</h1>
+  <p>An educational tour of the Galapagos Islands exploring evolution and natural selection.</p>
+  <p class="banner-meta">Year 11 Biology - Evolution Depth Study &nbsp;|&nbsp; Created by Harry Ni &nbsp;|&nbsp; Chatswood High School 2026</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num">1835</span>
+    <span class="stat-label">Darwin's arrival</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">18</span>
+    <span class="stat-label">Major islands</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">40+</span>
+    <span class="stat-label">Years of Grants' study</span>
+  </div>
+</div>
+
+<!-- DARWIN -->
+<div class="page" id="darwin">
+  <p class="section-label">Part One</p>
+  <h2>Charles Darwin and the Voyage of HMS Beagle</h2>
+
+  <p>In 1831, Charles Darwin (aged 22) was offered the position of naturalist aboard HMS Beagle, a Royal Navy survey ship that was about to travel around the world. The voyage lasted nearly five years and changed how scientists understood life on Earth.</p>
+
+  <p>Darwin spent the journey observing and collecting specimens across South America, the Pacific Islands and beyond. His observations started to challenge the idea that species were fixed and never changed.</p>
+
+  <h3>Route of HMS Beagle (1831-1836)</h3>
+
+  <div class="voyage">
+    <span class="v-stop">Plymouth, England</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">Cape Verde</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">Brazil</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">Argentina</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">Chile</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop hi">Galapagos Islands</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">Tahiti</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">New Zealand</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">Australia</span>
+    <span class="v-arrow">-></span>
+    <span class="v-stop">England</span>
+  </div>
+
+  <p>HMS Beagle arrived at the Galapagos on <strong>15 September 1835</strong>. Darwin spent about <strong>five weeks</strong> across four islands (San Cristobal, Floreana, Isabela and Santiago) before the ship left on 20 October 1835.</p>
+
+  <h3>Map of Darwin's Voyage — HMS Beagle (1831–1836)</h3>
+  <div style="background:#d8eaf5; border-radius:8px; padding:0.9rem; margin:0.9rem 0; border:1px solid #b0cfe8;">
+    <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;font-family:Arial,sans-serif;">
+      <!-- Ocean -->
+      <rect width="900" height="400" fill="#c8e0f0" rx="6"/>
+      <!-- Continents (simplified) -->
+      <!-- North America -->
+      <path d="M60,30 Q130,20 190,55 Q220,80 210,140 Q190,170 160,165 Q120,160 90,130 Q55,95 60,30Z" fill="#b8d4a0"/>
+      <!-- South America -->
+      <path d="M175,180 Q230,165 265,200 Q290,240 280,310 Q260,360 220,365 Q180,360 165,320 Q150,270 155,230 Q160,200 175,180Z" fill="#b8d4a0"/>
+      <!-- Europe/UK -->
+      <ellipse cx="470" cy="60" rx="35" ry="28" fill="#b8d4a0"/>
+      <!-- Africa -->
+      <path d="M450,100 Q500,90 510,130 Q520,180 510,250 Q495,300 470,310 Q445,300 435,250 Q425,190 430,140 Q435,108 450,100Z" fill="#b8d4a0"/>
+      <!-- Cape Verde dots -->
+      <circle cx="408" cy="130" r="6" fill="#b8d4a0"/>
+      <!-- Asia -->
+      <path d="M600,30 Q720,20 780,55 Q810,80 800,120 Q780,140 730,130 Q680,118 640,95 Q610,75 600,30Z" fill="#b8d4a0"/>
+      <!-- Australia -->
+      <ellipse cx="750" cy="290" rx="65" ry="48" fill="#b8d4a0"/>
+      <!-- New Zealand -->
+      <ellipse cx="840" cy="305" rx="20" ry="32" fill="#b8d4a0"/>
+      <!-- Indian Ocean islands (Cape of Good Hope area) -->
+      <ellipse cx="540" cy="335" rx="12" ry="8" fill="#b8d4a0"/>
+
+      <!-- BEAGLE ROUTE -->
+      <defs>
+        <marker id="bm" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0,0 L9,4.5 L0,9 Z" fill="#c94f2c"/>
+        </marker>
+      </defs>
+      <!-- Segments with arrowheads -->
+      <!-- Plymouth -> Cape Verde -->
+      <line x1="468" y1="68" x2="412" y2="128" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Cape Verde -> Brazil -->
+      <line x1="408" y1="130" x2="252" y2="195" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Brazil -> Argentina -->
+      <line x1="265" y1="210" x2="240" y2="285" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Argentina -> Chile -->
+      <line x1="235" y1="295" x2="195" y2="330" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Chile -> Galapagos -->
+      <line x1="188" y1="330" x2="100" y2="248" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Galapagos -> Tahiti -->
+      <line x1="95" y1="248" x2="42" y2="268" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Tahiti -> NZ (wrap across, dotted) -->
+      <line x1="38" y1="268" x2="836" y2="295" stroke="#c94f2c" stroke-width="2.5" stroke-dasharray="10,6" marker-end="url(#bm)"/>
+      <!-- NZ -> Australia -->
+      <line x1="832" y1="298" x2="758" y2="290" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Australia -> Cape of Good Hope -->
+      <line x1="748" y1="295" x2="546" y2="334" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+      <!-- Cape of Good Hope -> Plymouth -->
+      <line x1="542" y1="330" x2="470" y2="74" stroke="#c94f2c" stroke-width="2.5" marker-end="url(#bm)"/>
+
+      <!-- STOP DOTS -->
+      <circle cx="468" cy="68" r="7" fill="#1a6b5a" stroke="#fff" stroke-width="2"/>
+      <circle cx="408" cy="130" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+      <circle cx="252" cy="198" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+      <circle cx="238" cy="288" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+      <circle cx="193" cy="332" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+      <!-- Galapagos - highlighted -->
+      <circle cx="95" cy="248" r="11" fill="#c94f2c" stroke="#fff" stroke-width="3"/>
+      <circle cx="38" cy="268" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+      <circle cx="836" cy="298" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+      <circle cx="752" cy="290" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+      <circle cx="542" cy="334" r="5" fill="#e07b39" stroke="#fff" stroke-width="2"/>
+
+      <!-- LABELS -->
+      <text x="468" y="52" text-anchor="middle" font-size="9" font-weight="700" fill="#1a6b5a">Plymouth</text>
+      <text x="468" y="62" text-anchor="middle" font-size="8" fill="#1a6b5a">Start &amp; End 1831/1836</text>
+      <text x="395" y="126" text-anchor="end" font-size="8" fill="#444">Cape Verde</text>
+      <text x="240" y="192" text-anchor="end" font-size="8" fill="#444">Brazil</text>
+      <text x="224" y="285" text-anchor="end" font-size="8" fill="#444">Argentina</text>
+      <text x="178" y="344" text-anchor="end" font-size="8" fill="#444">Chile</text>
+      <text x="95" y="233" text-anchor="middle" font-size="9" font-weight="700" fill="#c94f2c">★ Galapagos</text>
+      <text x="95" y="224" text-anchor="middle" font-size="8" fill="#c94f2c">Sept–Oct 1835</text>
+      <text x="36" y="260" text-anchor="middle" font-size="8" fill="#444">Tahiti</text>
+      <text x="836" y="288" text-anchor="middle" font-size="8" fill="#444">New Zealand</text>
+      <text x="748" y="280" text-anchor="middle" font-size="8" fill="#444">Australia</text>
+      <text x="555" y="330" text-anchor="start" font-size="8" fill="#444">Cape of Good Hope</text>
+
+      <!-- LEGEND box -->
+      <rect x="10" y="10" width="245" height="52" rx="5" fill="rgba(255,255,255,0.9)" stroke="#ccc" stroke-width="1"/>
+      <text x="20" y="27" font-size="10" font-weight="700" fill="#202124">Route of HMS Beagle (1831–1836)</text>
+      <line x1="20" y1="38" x2="55" y2="38" stroke="#c94f2c" stroke-width="2.5" stroke-dasharray="6,3"/>
+      <text x="60" y="42" font-size="9" fill="#444">Beagle route</text>
+      <circle cx="24" cy="53" r="5" fill="#c94f2c" stroke="#fff" stroke-width="1.5"/>
+      <text x="32" y="57" font-size="9" fill="#c94f2c" font-weight="700">★ Galapagos Islands (highlighted)</text>
+    </svg>
+    <p style="font-size:0.7rem;color:#5a6a7a;margin-top:0.35rem;margin-bottom:0;">Figure 1: The route of HMS Beagle during Darwin's 1831–1836 voyage. The Galapagos Islands (red star) were visited from 15 September to 20 October 1835 — the key turning point of the voyage.</p>
+  </div>
+
+  <h3>Key observations Darwin made</h3>
+
+  <div class="obs-list">
+    <div class="obs-item">
+      <div class="obs-loc">San Cristobal</div>
+      <div class="obs-body">
+        <strong>Tortoises with different shell shapes</strong>
+        The local vice-governor told Darwin he could identify which island a tortoise came from just by looking at its shell. Dome-shaped shells on humid islands, saddle-backed shells on dry islands. Darwin did not think much of this at the time, but it became an important clue later.
+      </div>
+    </div>
+    <div class="obs-item">
+      <div class="obs-loc">Floreana and other islands</div>
+      <div class="obs-body">
+        <strong>Mockingbirds that were slightly different on each island</strong>
+        Darwin collected mockingbirds from several islands and noticed they were consistently different from each other. This was an early hint that populations could change depending on where they lived.
+      </div>
+    </div>
+    <div class="obs-item">
+      <div class="obs-loc">Multiple islands</div>
+      <div class="obs-body">
+        <strong>Finches with different beak shapes</strong>
+        Darwin collected around 70 bird specimens including 13 finch species, though he did not realise how significant they were at the time. Back in London, ornithologist John Gould identified them all as finches, each adapted to a different food source. This was a major turning point.
+      </div>
+    </div>
+    <div class="obs-item">
+      <div class="obs-loc">Marine environments</div>
+      <div class="obs-body">
+        <strong>Marine iguanas that swim and feed underwater</strong>
+        Darwin observed iguanas that had evolved to swim and feed on algae growing on underwater rocks. No other lizard in the world does this. They showed how dramatically a population can adapt to local conditions.
+      </div>
+    </div>
+  </div>
+
+  <h3>How Darwin developed his theory</h3>
+
+  <p>Darwin did not have a sudden "eureka" moment in the Galapagos. The theory came together gradually after he returned to England in 1836. When John Gould confirmed that all the different birds Darwin collected were actually related finches, it was a key turning point.</p>
+
+  <p>Darwin also read Thomas Malthus's essay on population, which argued that populations always grow faster than their food supply, causing competition. Darwin applied this idea to nature: individuals with traits that help them survive are more likely to reproduce and pass on those traits, slowly changing the population over time.</p>
+
+  <p>Darwin spent over 20 years refining his theory before publishing <em>On the Origin of Species</em> in 1859.</p>
+
+  <h3>The four steps of natural selection</h3>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">1</span>
+      <h4>Variation</h4>
+      <p>Individuals within a population show heritable differences in their traits.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">2</span>
+      <h4>Overproduction</h4>
+      <p>Populations produce more offspring than the environment can support.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">3</span>
+      <h4>Competition</h4>
+      <p>Individuals compete for limited food, space and other resources.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">4</span>
+      <h4>Differential Survival</h4>
+      <p>Individuals with useful traits survive and pass those traits on to offspring.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="page-divider">
+
+<!-- TOUR -->
+<div class="section-bg-green" id="tour">
+  <div class="page" style="padding-top:0; padding-bottom:0;">
+    <p class="section-label">Part Two</p>
+    <h2>A Three-Island Educational Tour</h2>
+    <p>The tour visits three islands chosen because each one shows a different aspect of evolution and adaptation. Total duration is 9 days.</p>
+    <p style="font-size:0.85rem; color:#5f6368;"><strong style="color:#202124;">Route:</strong> Santa Cruz (Days 1–3) → Espanola (Days 4–6) → Isabela (Days 7–9)</p>
+
+    <!-- Day-by-day itinerary table -->
+    <div style="margin:1rem 0 1.6rem; border:1px solid #b8d8c8; border-radius:7px; overflow:hidden; font-size:0.84rem;">
+      <div style="background:#1a6b5a; color:#fff; padding:0.55rem 1.1rem; font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em;">Detailed Day-by-Day Itinerary</div>
+      <!-- Santa Cruz -->
+      <div style="display:flex; border-bottom:1px solid #d4e9de;">
+        <div style="background:#e8f3ed; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #c3ddd0; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#1a6b5a;">Day 1</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Santa Cruz</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Arrive Puerto Ayora · Charles Darwin Research Station</strong><br>Fly into Baltra Airport and transfer by boat to Puerto Ayora. Afternoon visit to the Charles Darwin Research Station to observe the giant tortoise breeding programme and speak to conservation scientists.</div>
+      </div>
+      <div style="display:flex; border-bottom:1px solid #d4e9de;">
+        <div style="background:#e8f3ed; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #c3ddd0; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#1a6b5a;">Day 2</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Santa Cruz</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Santa Cruz Highlands · Tortoise reserve · Vegetation zones</strong><br>Full-day hike through the six vegetation zones of Santa Cruz — from dry coastal scrub to humid scalesia forest — observing wild giant tortoises. Study how Prickly Pear Cacti grow taller on tortoise-inhabited islands as an evolved defence.</div>
+      </div>
+      <div style="display:flex; border-bottom:2px solid #1a6b5a;">
+        <div style="background:#e8f3ed; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #c3ddd0; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#1a6b5a;">Day 3</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Santa Cruz</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Las Grietas snorkelling · Depart for Espanola</strong><br>Morning snorkelling at Las Grietas lava fissures to observe marine life. Afternoon speedboat transfer to Espanola (approx. 3 hours). Brief orientation walk at Gardner Bay on arrival.</div>
+      </div>
+      <!-- Espanola -->
+      <div style="display:flex; border-bottom:1px solid #f5e0d8;">
+        <div style="background:#fdf0ec; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #f0c9bc; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#c94f2c;">Day 4</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Espanola</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Punta Suarez · Waved Albatross colony</strong><br>Full-day visit to Punta Suarez. Observe the only Waved Albatross breeding colony in the world (approx. 12,000 pairs nest here seasonally). Watch synchronised courtship dances and study how the 2.4 m wingspan enables efficient soaring over the Pacific.</div>
+      </div>
+      <div style="display:flex; border-bottom:1px solid #f5e0d8;">
+        <div style="background:#fdf0ec; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #f0c9bc; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#c94f2c;">Day 5</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Espanola</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Marine iguanas · Gardner Bay snorkelling</strong><br>Morning observation of Espanola's Marine Iguanas — identifiable by their red and green colouring during breeding season. Observe salt-sneezing and communal basking. Afternoon snorkelling at Gardner Bay alongside sea lions and reef fish.</div>
+      </div>
+      <div style="display:flex; border-bottom:2px solid #c94f2c;">
+        <div style="background:#fdf0ec; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #f0c9bc; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#c94f2c;">Day 6</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Espanola</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Allopatric speciation workshop · Depart for Isabela</strong><br>Morning guided discussion using Espanola's endemic species as case studies for allopatric speciation — how geographic isolation creates new species over millions of years. Afternoon boat transfer to Isabela (approx. 2.5 hours), arriving at Puerto Villamil.</div>
+      </div>
+      <!-- Isabela -->
+      <div style="display:flex; border-bottom:1px solid #dce8f2;">
+        <div style="background:#edf2f8; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #c5d5e8; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#1e4a6e;">Day 7</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Isabela</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Tintoreras · Galapagos Penguin colony</strong><br>Morning boat tour around the Tintoreras islets to observe Galapagos Penguins — the only penguin species found north of the equator. Compare their heat management adaptations to cold-climate penguin species. Snorkel alongside penguins and white-tipped reef sharks.</div>
+      </div>
+      <div style="display:flex; border-bottom:1px solid #dce8f2;">
+        <div style="background:#edf2f8; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #c5d5e8; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#1e4a6e;">Day 8</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Isabela</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Flightless Cormorant walk · Sierra Negra volcano</strong><br>Morning coastal walk to observe Flightless Cormorants drying their vestigial wings — a study in relaxed selection when no land predators exist. Afternoon hike to the rim of Sierra Negra, one of Isabela's five active volcanoes, to observe primary succession on fresh lava.</div>
+      </div>
+      <div style="display:flex;">
+        <div style="background:#edf2f8; min-width:96px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0.7rem 0.5rem; border-right:1px solid #c5d5e8; text-align:center;">
+          <span style="font-size:0.65rem; font-weight:700; text-transform:uppercase; color:#1e4a6e;">Day 9</span>
+          <span style="font-size:0.7rem; color:#3c4043; margin-top:0.15rem;">Isabela</span>
+        </div>
+        <div style="padding:0.7rem 1rem; color:#3c4043;"><strong style="color:#202124;">Tortoise breeding centre · Depart</strong><br>Morning visit to Isabela's Giant Tortoise Breeding Centre to compare the five different tortoise subspecies — one per volcano — demonstrating how lava-flow barriers drive diversification within a single island. Ferry to Baltra Airport and depart.</div>
+      </div>
+    </div>
+
+    <div class="island-card" style="margin-top:1.25rem;">
+      <div class="island-header">
+        <h3>Santa Cruz</h3>
+        <span class="island-days">Days 1-3</span>
+      </div>
+      <div class="island-body">
+        <div class="island-facts">
+          <span>Also known as: Indefatigable Island</span>
+          <span>Central Galapagos</span>
+          <span>Charles Darwin Research Station</span>
+          <span>Multiple vegetation zones</span>
+        </div>
+        <div class="justify-box">
+          <strong>Why this island was chosen</strong>
+          Santa Cruz has the highest biodiversity of any Galapagos island, with habitats ranging from dry coastal scrub to humid highland forest. It is also home to the Charles Darwin Research Station which runs the tortoise breeding programme. This makes it ideal for understanding how evolution and conservation are connected.
+        </div>
+        <p style="font-size:0.87rem;">Students can observe giant tortoises in their natural highland habitat and speak to scientists at the research station about current conservation work.</p>
+        <h3>Featured organisms</h3>
+        <table class="org-table">
+          <tr>
+            <th style="width:22%;">Organism</th>
+            <th style="width:20%;">Adaptation type</th>
+            <th>Explanation</th>
+          </tr>
+          <tr>
+            <td>Galapagos Giant Tortoise<br><em style="font-weight:400; font-size:0.76rem; color:#5f6368;">Chelonoidis niger</em></td>
+            <td><span class="tag tag-s">Structural</span> <span class="tag tag-p">Physiological</span> <span class="tag tag-b">Behavioural</span></td>
+            <td>Dome-shaped shells on humid islands, saddle-backed shells on dry islands where the neck needs to stretch up to reach cacti. Tortoises can also survive up to a year without food or water, and they migrate between highland and lowland areas to regulate body temperature and access food.</td>
+          </tr>
+          <tr>
+            <td>Prickly Pear Cactus<br><em style="font-weight:400; font-size:0.76rem; color:#5f6368;">Opuntia echios</em></td>
+            <td><span class="tag tag-s">Structural</span> <span class="tag tag-p">Physiological</span></td>
+            <td>On islands with tortoises and iguanas, the cactus evolved to grow tall with a woody trunk so the edible pads are out of reach of ground animals. It also uses CAM photosynthesis, opening its stomata at night instead of during the day to reduce water loss.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="island-card">
+      <div class="island-header rust">
+        <h3>Espanola</h3>
+        <span class="island-days">Days 4-6</span>
+      </div>
+      <div class="island-body">
+        <div class="island-facts">
+          <span>Also known as: Hood Island</span>
+          <span>Oldest island in the archipelago</span>
+          <span>Highest endemism rate of any Galapagos island</span>
+          <span>Rocky coastlines and seabird colonies</span>
+        </div>
+        <div class="justify-box">
+          <strong>Why this island was chosen</strong>
+          Espanola is the oldest island in the archipelago and has been geographically isolated for millions of years. This has resulted in the highest rate of endemic species of any Galapagos island. It is a good case study for allopatric speciation, which is when isolated populations gradually become separate species.
+        </div>
+        <p style="font-size:0.87rem;">Espanola shows what happens when populations are isolated for long enough. The organisms here have changed so much from their ancestors that they are now completely different species.</p>
+        <h3>Featured organisms</h3>
+        <table class="org-table">
+          <tr>
+            <th style="width:22%;">Organism</th>
+            <th style="width:20%;">Adaptation type</th>
+            <th>Explanation</th>
+          </tr>
+          <tr>
+            <td>Waved Albatross<br><em style="font-weight:400; font-size:0.76rem; color:#5f6368;">Phoebastria irrorata</em></td>
+            <td><span class="tag tag-s">Structural</span> <span class="tag tag-p">Physiological</span> <span class="tag tag-b">Behavioural</span></td>
+            <td>A wingspan of up to 2.4 m lets the albatross soar over the ocean for months at a time, using wind gradients to travel long distances with minimal energy. Physiologically, albatrosses have a specialised nasal tube that enhances their sense of smell, allowing them to detect food sources like fish and squid across hundreds of kilometres of open ocean — a critical survival advantage in a featureless environment. Albatrosses also perform complex synchronised dances to form long-term mating pairs, which improves offspring survival rates.</td>
+          </tr>
+          <tr>
+            <td>Marine Iguana<br><em style="font-weight:400; font-size:0.76rem; color:#5f6368;">Amblyrhynchus cristatus</em></td>
+            <td><span class="tag tag-s">Structural</span> <span class="tag tag-p">Physiological</span> <span class="tag tag-b">Behavioural</span></td>
+            <td>A flat tail acts as a rudder for swimming, and a blunt downward-facing snout scrapes algae off underwater rocks. Specialised nasal glands remove excess salt by sneezing it out through the nostrils. After diving in cold water, iguanas bask together on lava rocks to warm up faster.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="island-card">
+      <div class="island-header navy">
+        <h3>Isabela</h3>
+        <span class="island-days">Days 7-9</span>
+      </div>
+      <div class="island-body">
+        <div class="island-facts">
+          <span>Also known as: Albemarle Island</span>
+          <span>Largest Galapagos island</span>
+          <span>Five active shield volcanoes</span>
+          <span>Only island where Galapagos penguins breed</span>
+        </div>
+        <div class="justify-box">
+          <strong>Why this island was chosen</strong>
+          Isabela is the largest and most volcanically active island. Its five volcanoes are separated by lava flows, so each supports a different tortoise subspecies. This makes it like a miniature version of the whole Galapagos. Fresh lava flows also let scientists study how life colonises new environments from scratch, which is useful for understanding early evolution on isolated islands.
+        </div>
+        <h3>Featured organisms</h3>
+        <table class="org-table">
+          <tr>
+            <th style="width:22%;">Organism</th>
+            <th style="width:20%;">Adaptation type</th>
+            <th>Explanation</th>
+          </tr>
+          <tr>
+            <td>Galapagos Penguin<br><em style="font-weight:400; font-size:0.76rem; color:#5f6368;">Spheniscus mendiculus</em></td>
+            <td><span class="tag tag-s">Structural</span> <span class="tag tag-p">Physiological</span> <span class="tag tag-b">Behavioural</span></td>
+            <td>Unlike Antarctic penguins, Galapagos penguins have thinner feathers to avoid overheating in a tropical climate. Their moult is timed to match food-rich periods linked to the Humboldt Current. On hot days they hold their flippers out from their body to lose heat and they seek shade under rocks.</td>
+          </tr>
+          <tr>
+            <td>Flightless Cormorant<br><em style="font-weight:400; font-size:0.76rem; color:#5f6368;">Nannopterum harrisi</em></td>
+            <td><span class="tag tag-s">Structural</span> <span class="tag tag-p">Physiological</span> <span class="tag tag-b">Behavioural</span></td>
+            <td>The only cormorant in the world that cannot fly. With no land predators on Isabela, large flight muscles had no survival benefit, so over many generations wings became much smaller — a structural change driven by relaxed selection. Physiologically, the cormorant has a higher concentration of oxygen-storing myoglobin in its muscles compared to flying cormorant species, improving its breath-holding capacity and diving efficiency in the cold Humboldt Current upwellings. Behaviourally, the birds still hold their vestigial wings out to dry after diving, a retained ancestral behaviour that no longer serves its original aerodynamic purpose.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="map-wrap">
+      <p style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:#4a6a7a; margin-bottom:0.75rem;">Tour Route Map</p>
+
+      <!-- Map container with real photo + SVG overlay -->
+      <div style="position:relative; display:inline-block; width:100%;">
+        <img src="galapagos-map.webp" alt="Galapagos Islands Map" style="width:100%; height:auto; display:block; border-radius:6px;">
+
+        <!-- SVG overlay scaled to match the photo's aspect ratio (2048x1727 = ~1.186:1) -->
+        <svg viewBox="0 0 2048 1727" xmlns="http://www.w3.org/2000/svg"
+             style="position:absolute; top:0; left:0; width:100%; height:100%;">
+
+          <defs>
+            <marker id="arr2" markerWidth="10" markerHeight="10" refX="7" refY="5" orient="auto">
+              <path d="M0,0 L10,5 L0,10 Z" fill="#e07b39"/>
+            </marker>
+          </defs>
+
+          <!-- ISABELA outline highlight (large island left side) -->
+          <ellipse cx="530" cy="1010" rx="230" ry="420"
+                   fill="rgba(30,74,110,0.18)" stroke="#1e4a6e" stroke-width="6" stroke-dasharray="18,8"/>
+
+          <!-- SANTA CRUZ outline highlight (centre island) -->
+          <ellipse cx="1150" cy="1020" rx="175" ry="130"
+                   fill="rgba(26,107,90,0.18)" stroke="#1a6b5a" stroke-width="6" stroke-dasharray="18,8"/>
+
+          <!-- ESPANOLA outline highlight (bottom right small island) -->
+          <ellipse cx="1700" cy="1560" rx="115" ry="80"
+                   fill="rgba(201,79,44,0.22)" stroke="#c94f2c" stroke-width="6" stroke-dasharray="18,8"/>
+
+          <!-- Tour route arrows: Santa Cruz -> Espanola -> Isabela -->
+          <path d="M 1250 1100 Q 1480 1350 1610 1510"
+                stroke="#e07b39" stroke-width="7" fill="none" stroke-dasharray="20,12"
+                marker-end="url(#arr2)"/>
+          <path d="M 1580 1530 Q 1100 1680 760 1200"
+                stroke="#e07b39" stroke-width="7" fill="none" stroke-dasharray="20,12"
+                marker-end="url(#arr2)"/>
+
+          <!-- Number badges -->
+          <!-- 1 Santa Cruz -->
+          <circle cx="1150" cy="870" r="44" fill="#1a6b5a" stroke="#fff" stroke-width="5"/>
+          <text x="1150" y="887" text-anchor="middle" font-family="Arial,sans-serif" font-size="46" font-weight="700" fill="#fff">1</text>
+
+          <!-- 2 Espanola -->
+          <circle cx="1700" cy="1420" r="44" fill="#c94f2c" stroke="#fff" stroke-width="5"/>
+          <text x="1700" y="1437" text-anchor="middle" font-family="Arial,sans-serif" font-size="46" font-weight="700" fill="#fff">2</text>
+
+          <!-- 3 Isabela -->
+          <circle cx="530" cy="560" r="44" fill="#1e4a6e" stroke="#fff" stroke-width="5"/>
+          <text x="530" y="577" text-anchor="middle" font-family="Arial,sans-serif" font-size="46" font-weight="700" fill="#fff">3</text>
+
+          <!-- KEY box top-right -->
+          <rect x="1430" y="60" width="580" height="290" rx="14"
+                fill="rgba(255,255,255,0.93)" stroke="#ccc" stroke-width="3"/>
+          <text x="1454" y="108" font-family="Arial,sans-serif" font-size="38" font-weight="700" fill="#202124">TOUR ISLANDS</text>
+
+          <circle cx="1472" cy="158" r="26" fill="#1a6b5a"/>
+          <text x="1472" y="167" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#fff">1</text>
+          <text x="1510" y="168" font-family="Arial,sans-serif" font-size="30" fill="#202124">Santa Cruz (Days 1-3)</text>
+
+          <circle cx="1472" cy="218" r="26" fill="#c94f2c"/>
+          <text x="1472" y="227" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#fff">2</text>
+          <text x="1510" y="228" font-family="Arial,sans-serif" font-size="30" fill="#202124">Espanola (Days 4-6)</text>
+
+          <circle cx="1472" cy="278" r="26" fill="#1e4a6e"/>
+          <text x="1472" y="287" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#fff">3</text>
+          <text x="1510" y="288" font-family="Arial,sans-serif" font-size="30" fill="#202124">Isabela (Days 7-9)</text>
+
+          <line x1="1454" y1="320" x2="1540" y2="320" stroke="#e07b39" stroke-width="5" stroke-dasharray="16,8"/>
+          <text x="1555" y="330" font-family="Arial,sans-serif" font-size="28" fill="#202124">Tour route</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GRANTS -->
+<div class="section-bg-dark" id="grants">
+  <div class="page" style="padding-top:0; padding-bottom:0;">
+    <p class="section-label">Part Three</p>
+    <h2>The Grants' Study: Evolution Observed in Real Time</h2>
+
+    <p>Peter and Rosemary Grant from Princeton University conducted one of the most important long-term studies in evolutionary biology. Starting in 1973, they spent decades on Daphne Major, a small volcanic island in the Galapagos, studying Darwin's finches. Their work was the first time scientists directly measured natural selection happening in a wild population.</p>
+
+    <div class="data-row">
+      <div class="data-box">
+        <span class="data-num">40+</span>
+        <span class="data-lbl">Years of continuous study</span>
+      </div>
+      <div class="data-box">
+        <span class="data-num">18,000+</span>
+        <span class="data-lbl">Individual birds banded and tracked</span>
+      </div>
+      <div class="data-box">
+        <span class="data-num">0.5 mm</span>
+        <span class="data-lbl">Average beak depth increase after 1977 drought</span>
+      </div>
+    </div>
+
+    <h3>Key findings</h3>
+
+    <div class="finding">
+      <p><strong>The 1977 drought (abiotic factor):</strong> A severe drought wiped out most small, soft seeds which were the preferred food of medium ground finches. Only large, hard seeds were left. Finches with bigger, deeper beaks could crack these seeds more easily and survived at higher rates. The average beak depth increased by about 0.5 mm in just one generation. This was caused by a change in rainfall, which is an abiotic factor.</p>
+    </div>
+
+    <div class="finding">
+      <p><strong>The 1983 El Nino reversal (abiotic factor):</strong> Heavy rain brought lots of small seeds back. Smaller-beaked finches now had an advantage because they could eat more efficiently. Beak size shifted back toward smaller. This showed that natural selection can go in reverse when conditions change.</p>
+    </div>
+
+    <div class="finding">
+      <p><strong>Competition between species (biotic factor):</strong> In 2004, a drought happened at the same time a larger finch species (<em>Geospiza magnirostris</em>) arrived on Daphne Major. The larger species outcompeted the medium ground finch for big seeds, so selection now favoured smaller beaks. This showed that biotic factors like competition can drive natural selection just as strongly as abiotic factors.</p>
+    </div>
+
+    <h3>Why this study matters</h3>
+
+    <p>Before the Grants' research, most scientists assumed natural selection was too slow to observe within a human lifetime — it was thought to take thousands or millions of years. The Grants proved this assumption wrong. Their study was the <strong>first time natural selection was directly measured in a wild population as it occurred</strong>, making it one of the most important pieces of evidence for evolutionary theory ever produced.</p>
+
+    <p>By measuring nearly every bird on Daphne Major for over 40 years, they showed that selection pressure from a single environmental event — such as a drought — can cause statistically significant, heritable changes in a population in under two years. Crucially, the study also demonstrated that evolution is not a one-way process: populations can shift in one direction and then reverse when conditions change, as seen in the 1977 drought followed by the 1983 El Niño.</p>
+
+    <p>The Grants' work directly confirmed Darwin's theory of natural selection using real measurements from a wild population, and it showed that both abiotic factors (like rainfall and temperature) and biotic factors (like competition between species) can independently drive evolutionary change. Their findings remain a cornerstone of modern evolutionary biology.</p>
+
+    <div class="chart-wrap">
+      <p class="chart-title">Figure 2: Mean beak depth (mm) of medium ground finch on Daphne Major — based on Grant &amp; Grant (2002)</p>
+
+      <div style="display:flex; align-items:flex-end; gap:0;">
+        <!-- Y-axis -->
+        <div style="display:flex; flex-direction:column; justify-content:space-between; height:148px; padding-bottom:26px; margin-right:5px; align-items:flex-end;">
+          <span style="font-size:0.6rem; color:rgba(255,255,255,0.45);">10.0</span>
+          <span style="font-size:0.6rem; color:rgba(255,255,255,0.45);">9.5</span>
+          <span style="font-size:0.6rem; color:rgba(255,255,255,0.45);">9.0</span>
+          <span style="font-size:0.6rem; color:rgba(255,255,255,0.45);">8.5</span>
+          <span style="font-size:0.6rem; color:rgba(255,255,255,0.45);">8.0</span>
+        </div>
+        <!-- Chart area -->
+        <div style="flex:1; position:relative;">
+          <!-- Grid lines -->
+          <div style="position:absolute; left:0; right:0; top:0; height:122px; pointer-events:none;">
+            <div style="border-top:1px dashed rgba(255,255,255,0.1); height:25%;"></div>
+            <div style="border-top:1px dashed rgba(255,255,255,0.1); height:25%;"></div>
+            <div style="border-top:1px dashed rgba(255,255,255,0.1); height:25%;"></div>
+            <div style="border-top:1px dashed rgba(255,255,255,0.1); height:25%;"></div>
+          </div>
+          <!-- Bars: range 8.0–10.0mm = 2mm total. Each 0.1mm = 6.1px. Heights: 9.1→66px, 9.6→97px, 8.9→55px, 8.6→37px -->
+          <div style="display:flex; align-items:flex-end; gap:0.5rem; height:122px; position:relative; z-index:1;">
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:0.2rem;">
+              <span style="font-size:0.7rem; color:#7dd3c8; font-weight:700;">9.1</span>
+              <div style="width:100%; height:66px; background:#1a6b5a; border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:0.2rem;">
+              <span style="font-size:0.7rem; color:#e07b39; font-weight:700;">9.6</span>
+              <div style="width:100%; height:97px; background:#e07b39; border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:0.2rem;">
+              <span style="font-size:0.7rem; color:#7dd3c8; font-weight:700;">8.9</span>
+              <div style="width:100%; height:55px; background:#1a6b5a; border-radius:3px 3px 0 0;"></div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:0.2rem;">
+              <span style="font-size:0.7rem; color:#7dd3c8; font-weight:700;">8.6</span>
+              <div style="width:100%; height:37px; background:#1a6b5a; border-radius:3px 3px 0 0;"></div>
+            </div>
+          </div>
+          <!-- X-axis labels -->
+          <div style="display:flex; gap:0.5rem; margin-top:0.35rem;">
+            <div style="flex:1; text-align:center; font-size:0.6rem; color:rgba(255,255,255,0.4); line-height:1.4;">1976<br>Pre-drought</div>
+            <div style="flex:1; text-align:center; font-size:0.6rem; color:rgba(255,255,255,0.4); line-height:1.4;">1978<br>Post-drought</div>
+            <div style="flex:1; text-align:center; font-size:0.6rem; color:rgba(255,255,255,0.4); line-height:1.4;">1984<br>Post El Niño</div>
+            <div style="flex:1; text-align:center; font-size:0.6rem; color:rgba(255,255,255,0.4); line-height:1.4;">2004<br>Competition</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Axis labels -->
+      <p style="font-size:0.65rem; color:rgba(255,255,255,0.3); margin-top:0.5rem; margin-bottom:0.5rem;">Y-axis: Mean beak depth (mm) &nbsp;|&nbsp; X-axis: Year and key selection event</p>
+
+      <div class="chart-legend">
+        <span><span class="ldot" style="background:#1a6b5a;"></span>Relatively smaller beak depth</span>
+        <span><span class="ldot" style="background:#e07b39;"></span>Relatively larger beak depth (peak selection)</span>
+      </div>
+      <p style="font-size:0.68rem; color:rgba(255,255,255,0.25); margin-top:0.75rem; margin-bottom:0;">Note: Values are approximate, based on Grant &amp; Grant (2002). Baseline is 8.0 mm; chart shows relative changes in mean beak depth across key selection events.</p>
+    </div>
+  </div>
+</div>
+
+<!-- BIBLIOGRAPHY -->
+<div class="section-bg" id="bibliography">
+  <div class="page" style="padding-top:0; padding-bottom:0;">
+    <p class="section-label">Sources</p>
+    <h2>Bibliography</h2>
+
+    <p class="bib-entry">BBC Earth (2013) <em>David Attenborough's Galapagos</em> [Television documentary series]. London: BBC.</p>
+    <p class="bib-entry">Darwin, C. (1845) <em>Journal of Researches into the Natural History and Geology of the Countries Visited during the Voyage of H.M.S. Beagle Round the World</em>. 2nd edn. London: John Murray.</p>
+    <p class="bib-entry">Darwin, C. (1859) <em>On the Origin of Species by Means of Natural Selection</em>. London: John Murray.</p>
+    <p class="bib-entry">Galapagos Conservation Trust (2023) <em>Species of the Galapagos</em>. Available at: https://www.galapagosconservation.org.uk/wildlife/ (Accessed: May 2026).</p>
+    <p class="bib-entry">Galapagos National Park Directorate (2024) <em>Visitor Sites and Island Information</em>. Available at: https://www.galapagos.gob.ec/ (Accessed: May 2026).</p>
+    <p class="bib-entry">Grant, P.R. and Grant, B.R. (2002) 'Unpredictable evolution in a 30-year study of Darwin's finches', <em>Science</em>, 296(5568), pp. 707-711. Available at: https://doi.org/10.1126/science.1070315.</p>
+    <p class="bib-entry">Grant, P.R. and Grant, B.R. (2014) <em>40 Years of Evolution: Darwin's Finches on Daphne Major Island</em>. Princeton: Princeton University Press.</p>
+    <p class="bib-entry">Kricher, J. (2006) <em>Galapagos: A Natural History</em>. Princeton: Princeton University Press.</p>
+    <p class="bib-entry">Nowak, M. (2016) <em>Encyclopedia of the Galapagos Islands</em>. Charles Darwin Foundation. Available at: https://www.darwinfoundation.org/ (Accessed: May 2026).</p>
+    <p class="bib-entry">Weiner, J. (1994) <em>The Beak of the Finch: A Story of Evolution in Our Time</em>. New York: Alfred A. Knopf.</p>
+
+    <p class="bib-note">All sources were checked using the CRAAP test (Currency, Relevance, Authority, Accuracy, Purpose) before being included. Peer-reviewed journal articles and publications from established research institutions were given priority.</p>
+  </div>
+</div>
+
+<footer>
+  <p><strong>Harry Ni</strong> - Year 11 Biology, Evolution Depth Study</p>
+  <p>Chatswood High School, 2026</p>
+  <p style="margin-top:0.25rem; font-size:0.72rem;">All content is cited in the bibliography above</p>
+</footer>
+
+</body>
+</html>
